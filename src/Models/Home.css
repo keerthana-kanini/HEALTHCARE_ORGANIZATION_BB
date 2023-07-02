@@ -1,0 +1,15 @@
+.slick-slider {
+    position: relative;
+  }
+  
+  .slick-slide {
+    text-align: center;
+    height: 100px; 
+  }
+  
+  .slick-slide img {
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+  }
+  

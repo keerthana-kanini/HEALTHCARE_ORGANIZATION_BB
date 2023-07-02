@@ -4,6 +4,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import Doctor from './Models/Doctor';
 import { Patient } from './Models/Patient';
+import { Home } from './Models/Home';
+import DoctorRegister from '../src/Models/DoctorRegister';
+import DoctorLogin from './Models/DoctorLogin';
+import PatientRegister from './Models/PatientRegister';
+import PatientLogin from './Models/PaientLogin';
 
 function App() {
   return (
@@ -15,6 +20,11 @@ function App() {
           <div className="container">
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
+              <li className="nav-item">
+                  <NavLink className="nav-link" to="/home" activeClassName="active">
+                    HOME
+                  </NavLink>
+                </li>
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/doctor" activeClassName="active">
                     Doctor
@@ -25,14 +35,42 @@ function App() {
                     Patient
                   </NavLink>
                 </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/register" activeClassName="active">
+                    Register
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/login" activeClassName="active">
+                    Login
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/Patientlogin" activeClassName="active">
+                    PatientLogin
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/PatientRegister" activeClassName="active">
+                  PatientRegister
+                  </NavLink>
+                </li>
+                
                </ul>
             </div>
           </div>
         </nav>
 
         <Routes>
+          
+        <Route path="/home" element={<Home />} />
           <Route path="/doctor" element={<Doctor />} />
           <Route path="/patient" element={<Patient/>} />
+          <Route path="/Register" element={<DoctorRegister />} />
+          <Route path="/Login" element={<DoctorLogin/>} />
+          <Route path="/PatientRegister" element={<PatientRegister />} />
+          <Route path="/PatientLogin" element={<PatientLogin/>} />
+
         </Routes>
       </BrowserRouter>
     </div>
