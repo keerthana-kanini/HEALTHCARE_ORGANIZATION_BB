@@ -16,7 +16,8 @@ export default class Doctor extends Component {
         doctor_Email: '',
         contact_No: '',
         status: '',
-        imageData: '',
+        password: '',
+        imageData: null, // Change to null for better handling of file input
       },
       isEditMode: false,
     };
@@ -48,7 +49,7 @@ export default class Doctor extends Component {
           selectedDoctor,
           newDoctor: {
             ...selectedDoctor,
-            imageData: '',
+            imageData: null, // Change to null for better handling of file input
           },
           isEditMode: true,
         });
@@ -59,36 +60,37 @@ export default class Doctor extends Component {
   };
 
   updateDoctor = () => {
-    const { selectedDoctorId, newDoctor } = this.state;
+  const { selectedDoctorId, newDoctor } = this.state;
 
-    axios
-      .put(`${variables.API_URL}Doctor/${selectedDoctorId}`, newDoctor, {
-        headers: {
-          'Content-Type': 'application/json',
+  axios
+    .put(`${variables.API_URL}Doctor/${selectedDoctorId}`, newDoctor, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // Set the correct content type
+      },
+    })
+    .then((response) => {
+      const updatedDoctor = response.data;
+      console.log('Doctor updated:', updatedDoctor);
+      this.fetchDoctors();
+      this.setState({
+        selectedDoctorId: null,
+        selectedDoctor: null,
+        newDoctor: {
+          doctor_Name: '',
+          specialization: '',
+          doctor_Email: '',
+          contact_No: '',
+          status: '',
+          password: '',
+          imageData: null, // Change to null for better handling of file input
         },
-      })
-      .then((response) => {
-        const updatedDoctor = response.data;
-        console.log('Doctor updated:', updatedDoctor);
-        this.fetchDoctors();
-        this.setState({
-          selectedDoctorId: null,
-          selectedDoctor: null,
-          newDoctor: {
-            doctor_Name: '',
-            specialization: '',
-            doctor_Email: '',
-            contact_No: '',
-            status: '',
-            imageData: '',
-          },
-          isEditMode: false,
-        });
-      })
-      .catch((error) => {
-        console.error('Error updating the doctor:', error);
+        isEditMode: false,
       });
-  };
+    })
+    .catch((error) => {
+      console.error('Error updating the doctor:', error);
+    });
+};
 
   handleDelete = (doctorId) => {
     const confirmed = window.confirm('Are you sure you want to delete this doctor?');
@@ -143,10 +145,18 @@ export default class Doctor extends Component {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('contact_No', newDoctor.contact_No);
+    formData.append('doctor_Name', newDoctor.doctor_Name);
+    formData.append('specialization', newDoctor.specialization);
+    formData.append('status', newDoctor.status);
+    formData.append('password', newDoctor.password);
+    formData.append('imageFile', newDoctor.imageData);
+
     axios
-      .post(`${variables.API_URL}Doctor`, newDoctor, {
+      .post(`${variables.API_URL}Doctor`, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data', // Change content type for file upload
         },
       })
       .then((response) => {
@@ -159,7 +169,8 @@ export default class Doctor extends Component {
             doctor_Email: '',
             contact_No: '',
             status: '',
-            imageData: '',
+            password: '',
+            imageData: null, // Change to null for better handling of file input
           },
         });
       })
@@ -224,6 +235,15 @@ export default class Doctor extends Component {
             />
           </label>
           <label>
+            Password:
+            <input
+              type="password"
+              name="password"
+              value={newDoctor.password}
+              onChange={this.handleInputChange}
+            />
+          </label>
+          <label>
             Image:
             <input
               type="file"
@@ -242,26 +262,23 @@ export default class Doctor extends Component {
                 src={`data:image/jpeg;base64,${doctor.imageData}`}
                 alt="Doctor"
               />
-              <p>
-                <b>Doctor Name:</b> {doctor.doctor_Name}
-              </p>
-              <p>
-                <b>Specialization:</b> {doctor.specialization}
-              </p>
-              <p>
-                <b>Doctor Email:</b> {doctor.doctor_Email}
-              </p>
-              <p>
-                <b>Contact No:</b> {doctor.contact_No}
-              </p>
-              <p>
-                <b>Status:</b> {doctor.status}
-              </p>
-
-              {/* Update Button */}
-              <button onClick={() => this.handleUpdate(doctor.doctor_Id)}>Update</button>
-
-              <button onClick={() => this.handleDelete(doctor.doctor_Id)}>Delete</button>
+              <p>Doctor Name: {doctor.doctor_Name}</p>
+              <p>Specialization: {doctor.specialization}</p>
+              <p>Email: {doctor.doctor_Email}</p>
+              <p>Contact No: {doctor.contact_No}</p>
+              <p>Status: {doctor.status}</p>
+              <button
+                className="edit-button"
+                onClick={() => this.handleUpdate(doctor.doctor_Id)}
+              >
+                Edit
+              </button>
+              <button
+                className="delete-button"
+                onClick={() => this.handleDelete(doctor.doctor_Id)}
+              >
+                Delete
+              </button>
             </div>
           ))}
         </div>

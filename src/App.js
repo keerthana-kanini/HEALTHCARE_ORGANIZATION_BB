@@ -9,6 +9,7 @@ import DoctorRegister from '../src/Models/DoctorRegister';
 import DoctorLogin from './Models/DoctorLogin';
 import PatientRegister from './Models/PatientRegister';
 import PatientLogin from './Models/PaientLogin';
+import Appointment from './Models/Appointment';
 
 function App() {
   return (
@@ -33,6 +34,11 @@ function App() {
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/patient" activeClassName="active">
                     Patient
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/Appointment" activeClassName="active">
+                    Appointment
                   </NavLink>
                 </li>
                 <li className="nav-item">
@@ -66,6 +72,7 @@ function App() {
         <Route path="/home" element={<Home />} />
           <Route path="/doctor" element={<Doctor />} />
           <Route path="/patient" element={<Patient/>} />
+          <Route path="/Appointment" element={<Appointment/>} />
           <Route path="/Register" element={<DoctorRegister />} />
           <Route path="/Login" element={<DoctorLogin/>} />
           <Route path="/PatientRegister" element={<PatientRegister />} />

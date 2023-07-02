@@ -61,6 +61,7 @@ export class Patient extends Component {
     const { patient_Name, disease, disease_Description, patient_No, password, doctorId } = this.state;
 
     const patient = {
+      patient_Id: 0, // Change patient_id to patient_Id
       patient_Name: patient_Name,
       disease: disease,
       disease_Description: disease_Description,
@@ -122,8 +123,9 @@ export class Patient extends Component {
 
   updatePatient = () => {
     const { patient_Name, disease, disease_Description, patient_No, password, doctorId, selectedPatientId } = this.state;
-  
+
     const updatedPatient = {
+      patient_Id: selectedPatientId, // Change selectedPatientId to patient_Id
       patient_Name: patient_Name,
       disease: disease,
       disease_Description: disease_Description,
@@ -134,7 +136,7 @@ export class Patient extends Component {
         // Add doctor details if necessary
       }
     };
-  
+
     axios
       .put(variables.API_URL + `Patient/${selectedPatientId}`, updatedPatient, {
         headers: {
@@ -164,7 +166,7 @@ export class Patient extends Component {
         }
       });
   };
-  
+
   handleDelete = (patientId) => {
     const confirmed = window.confirm("Are you sure you want to delete this patient?");
 
@@ -248,21 +250,17 @@ export class Patient extends Component {
                 <h3>{patient.patient_Name}</h3>
               </div>
               <div className="card-body">
-                <p><strong>Disease:</strong> {patient.disease}</p>
-                <p><strong>Description:</strong> {patient.disease_Description}</p>
-                <p><strong>Patient No:</strong> {patient.patient_No}</p>
+                <p>Disease: {patient.disease}</p>
+                <p>Description: {patient.disease_Description}</p>
+                <p>Patient No: {patient.patient_No}</p>
+                {/* <p>Password: {patient.password}</p> */}
+                <p>Doctor ID: {patient.doctorId}</p>
               </div>
               <div className="card-footer">
-                <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => this.handleUpdate(patient.patient_Id)}
-                >
+                <button className="btn btn-primary" onClick={() => this.handleUpdate(patient.patient_Id)}>
                   Update
                 </button>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => this.handleDelete(patient.patient_Id)}
-                >
+                <button className="btn btn-danger" onClick={() => this.handleDelete(patient.patient_Id)}>
                   Delete
                 </button>
               </div>
@@ -273,3 +271,5 @@ export class Patient extends Component {
     );
   }
 }
+
+export default Patient;
