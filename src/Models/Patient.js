@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { variables } from "./Variable";
-// import "./Patient.css";
+import "./Patient.css";
 
 export class Patient extends Component {
   constructor(props) {
@@ -14,7 +14,8 @@ export class Patient extends Component {
       patient_No: "",
       password: "",
       doctorId: "",
-      selectedPatientId: null
+      selectedPatientId: null,
+      showForm: false,
     };
   }
 
@@ -57,6 +58,19 @@ export class Patient extends Component {
     this.setState({ doctorId: event.target.value });
   };
 
+  toggleForm = () => {
+    this.setState((prevState) => ({
+      showForm: !prevState.showForm,
+      selectedPatientId: null,
+      patient_Name: "",
+      disease: "",
+      disease_Description: "",
+      patient_No: "",
+      password: "",
+      doctorId: "",
+    }));
+  };
+
   createPatient = () => {
     const { patient_Name, disease, disease_Description, patient_No, password, doctorId } = this.state;
 
@@ -70,14 +84,14 @@ export class Patient extends Component {
       doctorId: doctorId ? parseInt(doctorId) : 0,
       doctor: {
         // Add doctor details if necessary
-      }
+      },
     };
 
     axios
       .post(variables.API_URL + "Patient", patient, {
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       })
       .then((response) => {
         const data = response.data;
@@ -92,7 +106,8 @@ export class Patient extends Component {
             disease_Description: "",
             patient_No: "",
             password: "",
-            doctorId: ""
+            doctorId: "",
+            showForm: false,
           });
         }
       })
@@ -113,7 +128,8 @@ export class Patient extends Component {
           patient_No: patient_No,
           password: password,
           doctorId: doctorId ? doctorId.toString() : "",
-          selectedPatientId: patientId
+          selectedPatientId: patientId,
+          showForm: true,
         });
       })
       .catch((error) => {
@@ -134,7 +150,7 @@ export class Patient extends Component {
       doctorId: doctorId ? parseInt(doctorId) : 0,
       doctor: {
         // Add doctor details if necessary
-      }
+      },
     };
 
     axios
@@ -155,6 +171,7 @@ export class Patient extends Component {
           password: "",
           doctorId: "",
           selectedPatientId: null,
+          showForm: false,
         });
       })
       .catch((error) => {
@@ -174,8 +191,8 @@ export class Patient extends Component {
       axios
         .delete(`${variables.API_URL}Patient/${patientId}`, {
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         })
         .then((response) => {
           const data = response.data;
@@ -189,58 +206,44 @@ export class Patient extends Component {
   };
 
   render() {
-    const { patients, patient_Name, disease, disease_Description, patient_No, password, doctorId, selectedPatientId } = this.state;
+    const { patients, patient_Name, disease, disease_Description, patient_No, password, doctorId, selectedPatientId, showForm } = this.state;
 
     return (
-      <div>
+      <div className="patient-container">
         <h1>Patient Component</h1>
-        <h2>Create Patient</h2>
-
-        {/* Input fields for patient details */}
-        <input
-          type="text"
-          value={patient_Name}
-          onChange={this.handleNameInputChange}
-          placeholder="Enter Patient Name"
-        />
-        <input
-          type="text"
-          value={disease}
-          onChange={this.handleDiseaseInputChange}
-          placeholder="Enter Disease"
-        />
-        <input
-          type="text"
-          value={disease_Description}
-          onChange={this.handleDescriptionInputChange}
-          placeholder="Enter Disease Description"
-        />
-        <input
-          type="text"
-          value={patient_No}
-          onChange={this.handleNoInputChange}
-          placeholder="Enter Patient Number"
-        />
-        <input
-          type="text"
-          value={password}
-          onChange={this.handlePasswordInputChange}
-          placeholder="Enter Password"
-        />
-        <input
-          type="text"
-          value={doctorId}
-          onChange={this.handleDoctorIdInputChange}
-          placeholder="Enter Doctor ID"
-        />
-        {selectedPatientId ? (
-          <button className="btn btn-primary" onClick={this.updatePatient}>
-            Save
+        <h2>Patient List</h2>
+        {!showForm && (
+          <button className="btn btn-primary" onClick={this.toggleForm}>
+            Create Patient
           </button>
-        ) : (
-          <button className="btn btn-primary" onClick={this.createPatient}>
-            Create
-          </button>
+        )}
+        {showForm && (
+          <div>
+            <h2>{selectedPatientId ? "Update Patient" : "Create Patient"}</h2>
+            <div className="input-container">
+              {/* Input fields for patient details */}
+              <input type="text" value={patient_Name} onChange={this.handleNameInputChange} placeholder="Enter Patient Name" />
+              <input type="text" value={disease} onChange={this.handleDiseaseInputChange} placeholder="Enter Disease" />
+              <input
+                type="text"
+                value={disease_Description}
+                onChange={this.handleDescriptionInputChange}
+                placeholder="Enter Disease Description"
+              />
+              <input type="text" value={patient_No} onChange={this.handleNoInputChange} placeholder="Enter Patient Number" />
+              <input type="text" value={password} onChange={this.handlePasswordInputChange} placeholder="Enter Password" />
+              <input type="text" value={doctorId} onChange={this.handleDoctorIdInputChange} placeholder="Enter Doctor ID" />
+              {selectedPatientId ? (
+                <button className="btn btn-primary" onClick={this.updatePatient}>
+                  Save
+                </button>
+              ) : (
+                <button className="btn btn-primary" onClick={this.createPatient}>
+                  Create
+                </button>
+              )}
+            </div>
+          </div>
         )}
 
         <div className="card-container">

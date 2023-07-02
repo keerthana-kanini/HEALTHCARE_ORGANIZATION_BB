@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
-
-const API_URL = "https://localhost:7123/api/Appointment";
+import { variables } from "./Variable";
+import "./Appointment.css";
 
 export class Appointment extends Component {
   constructor(props) {
@@ -13,10 +13,9 @@ export class Appointment extends Component {
       patientName: "",
       patientPhoneNumber: "",
       patientEmail: "",
-      patientId: "",
+      patientId: 0,
+      doctorId: 0,
       selectedAppointmentId: null,
-      isLoading: false,
-      error: null
     };
   }
 
@@ -26,63 +25,99 @@ export class Appointment extends Component {
 
   fetchAppointments() {
     axios
-      .get(API_URL)
+      .get(`${variables.API_URL}Appointment`)
       .then((response) => {
         this.setState({ appointments: response.data });
       })
       .catch((error) => {
         console.error("Error Fetching Appointments:", error);
-        this.setState({ error: "Failed to fetch appointments" });
       });
   }
 
-  handleInputChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
+  handleDateInputChange(event) {
+    const { value } = event.target;
+    this.setState({ appointmentDate: value });
+  }
 
-  createAppointment = () => {
+  handleDescriptionInputChange(event) {
+    this.setState({ description: event.target.value });
+  }
+
+  handleNameInputChange(event) {
+    this.setState({ patientName: event.target.value });
+  }
+
+  handlePhoneNumberInputChange(event) {
+    this.setState({ patientPhoneNumber: event.target.value });
+  }
+
+  handleEmailInputChange(event) {
+    this.setState({ patientEmail: event.target.value });
+  }
+
+  handleIdInputChange(event) {
+    this.setState({ patientId: event.target.value });
+  }
+
+  handleDoctorIdInputChange(event) {
+    this.setState({ doctorId: event.target.value });
+  }
+
+  createAppointment() {
     const {
       appointmentDate,
       description,
       patientName,
       patientPhoneNumber,
       patientEmail,
-      patientId
+      patientId,
+      doctorId,
     } = this.state;
 
-    const appointment = {
-      appointmentDate,
+    const appointmentDateValue = new Date(appointmentDate).toISOString();
+
+    const newAppointment = {
+      appointmentDate: appointmentDateValue,
       description,
       patientName,
       patientPhoneNumber,
       patientEmail,
-      patientId: patientId ? parseInt(patientId) : 0
+      patientId: patientId ? parseInt(patientId) : 0,
+      doctorId: doctorId ? parseInt(doctorId) : 0,
     };
 
     axios
-      .post(API_URL, appointment)
+      .post(`${variables.API_URL}Appointment`, newAppointment, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         const data = response.data;
-        console.log("Appointment Created:", data);
-        this.fetchAppointments();
-        this.setState({
-          appointmentDate: "",
-          description: "",
-          patientName: "",
-          patientPhoneNumber: "",
-          patientEmail: "",
-          patientId: ""
-        });
+        if (data.errors) {
+          console.log("Validation Errors:", data.errors);
+        } else {
+          console.log("Appointment Created:", data);
+          this.fetchAppointments();
+          this.setState({
+            appointmentDate: "",
+            description: "",
+            patientName: "",
+            patientPhoneNumber: "",
+            patientEmail: "",
+            patientId: "",
+            doctorId: "",
+          });
+        }
       })
       .catch((error) => {
         console.error("Error Creating the Appointment:", error);
-        this.setState({ error: "Failed to create appointment" });
       });
-  };
+  }
 
-  handleUpdate = (appointmentId) => {
+  handleUpdate(appointmentId) {
     axios
-      .get(`${API_URL}/${appointmentId}`)
+      .get(`${variables.API_URL}Appointment/${appointmentId}`)
       .then((response) => {
         const {
           appointmentDate,
@@ -90,7 +125,8 @@ export class Appointment extends Component {
           patientName,
           patientPhoneNumber,
           patientEmail,
-          patientId
+          patientId,
+          doctorId,
         } = response.data;
         this.setState({
           appointmentDate,
@@ -99,16 +135,16 @@ export class Appointment extends Component {
           patientPhoneNumber,
           patientEmail,
           patientId: patientId ? patientId.toString() : "",
-          selectedAppointmentId: appointmentId
+          doctorId: doctorId ? doctorId.toString() : "",
+          selectedAppointmentId: appointmentId,
         });
       })
       .catch((error) => {
         console.error("Error Fetching Appointment Details:", error);
-        this.setState({ error: "Failed to fetch appointment details" });
       });
-  };
+  }
 
-  updateAppointment = () => {
+  updateAppointment() {
     const {
       appointmentDate,
       description,
@@ -116,57 +152,68 @@ export class Appointment extends Component {
       patientPhoneNumber,
       patientEmail,
       patientId,
-      selectedAppointmentId
+      doctorId,
+      selectedAppointmentId,
     } = this.state;
 
+    const appointmentDateValue = new Date(appointmentDate).toISOString();
+
     const updatedAppointment = {
-      appointmentDate,
+      appointmentId: selectedAppointmentId,
+      appointmentDate: appointmentDateValue,
       description,
       patientName,
       patientPhoneNumber,
       patientEmail,
-      patientId: patientId ? parseInt(patientId) : 0
+      patientId: patientId ? parseInt(patientId) : 0,
+      doctorId: doctorId ? parseInt(doctorId) : 0,
     };
 
     axios
-      .put(`${API_URL}/${selectedAppointmentId}`, updatedAppointment)
+      .put(
+        `${variables.API_URL}Appointment/${selectedAppointmentId}`,
+        updatedAppointment,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         const data = response.data;
-        console.log("Appointment Updated:", data);
-        this.fetchAppointments();
-        this.setState({
-          appointmentDate: "",
-          description: "",
-          patientName: "",
-          patientPhoneNumber: "",
-          patientEmail: "",
-          patientId: "",
-          selectedAppointmentId: null
-        });
+        if (data.errors) {
+          console.log("Validation Errors:", data.errors);
+        } else {
+          console.log("Appointment Updated:", data);
+          this.fetchAppointments();
+          this.setState({
+            appointmentDate: "",
+            description: "",
+            patientName: "",
+            patientPhoneNumber: "",
+            patientEmail: "",
+            patientId: "",
+            doctorId: "",
+            selectedAppointmentId: null,
+          });
+        }
       })
       .catch((error) => {
         console.error("Error Updating the Appointment:", error);
-        this.setState({ error: "Failed to update appointment" });
       });
-  };
+  }
 
-  handleDelete = (appointmentId) => {
-    const confirmed = window.confirm("Are you sure you want to delete this appointment?");
-
-    if (confirmed) {
-      axios
-        .delete(`${API_URL}/${appointmentId}`)
-        .then((response) => {
-          const data = response.data;
-          console.log("Appointment Deleted:", data);
-          this.fetchAppointments();
-        })
-        .catch((error) => {
-          console.error("Error Deleting the Appointment:", error);
-          this.setState({ error: "Failed to delete appointment" });
-        });
-    }
-  };
+  handleDelete(appointmentId) {
+    axios
+      .delete(`${variables.API_URL}Appointment/${appointmentId}`)
+      .then((response) => {
+        console.log("Appointment Deleted:", response.data);
+        this.fetchAppointments();
+      })
+      .catch((error) => {
+        console.error("Error Deleting the Appointment:", error);
+      });
+  }
 
   render() {
     const {
@@ -177,95 +224,115 @@ export class Appointment extends Component {
       patientPhoneNumber,
       patientEmail,
       patientId,
+      doctorId,
       selectedAppointmentId,
-      isLoading,
-      error
     } = this.state;
 
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
-
-    if (error) {
-      return <div>Error: {error}</div>;
-    }
-
     return (
-      <div>
-        <h1>Appointment Component</h1>
-        <h2>Create Appointment</h2>
+      <div className="appointment-container">
+        <h2>Appointments</h2>
 
-        {/* Input fields for appointment details */}
-        <input
-          type="text"
-          name="appointmentDate"
-          value={appointmentDate}
-          onChange={this.handleInputChange}
-          placeholder="Enter Appointment Date"
-        />
-        <input
-          type="text"
-          name="description"
-          value={description}
-          onChange={this.handleInputChange}
-          placeholder="Enter Description"
-        />
-        <input
-          type="text"
-          name="patientName"
-          value={patientName}
-          onChange={this.handleInputChange}
-          placeholder="Enter Patient Name"
-        />
-        <input
-          type="text"
-          name="patientPhoneNumber"
-          value={patientPhoneNumber}
-          onChange={this.handleInputChange}
-          placeholder="Enter Patient Phone Number"
-        />
-        <input
-          type="text"
-          name="patientEmail"
-          value={patientEmail}
-          onChange={this.handleInputChange}
-          placeholder="Enter Patient Email"
-        />
-        <input
-          type="text"
-          name="patientId"
-          value={patientId}
-          onChange={this.handleInputChange}
-          placeholder="Enter Patient ID"
-        />
-        {selectedAppointmentId ? (
-          <button className="btn btn-primary" onClick={this.updateAppointment}>
-            Save
-          </button>
-        ) : (
-          <button className="btn btn-primary" onClick={this.createAppointment}>
-            Create
-          </button>
-        )}
+        <form>
+          <div className="form-group">
+            <label>Date:</label>
+            <input
+              className="form-control"
+              type="datetime-local"
+              value={appointmentDate}
+              onChange={(e) => this.handleDateInputChange(e)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Description:</label>
+            <input
+              className="form-control"
+              type="text"
+              value={description}
+              onChange={(e) => this.handleDescriptionInputChange(e)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Patient Name:</label>
+            <input
+              className="form-control"
+              type="text"
+              value={patientName}
+              onChange={(e) => this.handleNameInputChange(e)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Patient Phone Number:</label>
+            <input
+              className="form-control"
+              type="text"
+              value={patientPhoneNumber}
+              onChange={(e) => this.handlePhoneNumberInputChange(e)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Patient Email:</label>
+            <input
+              className="form-control"
+              type="text"
+              value={patientEmail}
+              onChange={(e) => this.handleEmailInputChange(e)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Patient ID:</label>
+            <input
+              className="form-control"
+              type="text"
+              value={patientId}
+              onChange={(e) => this.handleIdInputChange(e)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Doctor ID:</label>
+            <input
+              className="form-control"
+              type="text"
+              value={doctorId}
+              onChange={(e) => this.handleDoctorIdInputChange(e)}
+            />
+          </div>
+          <div className="form-group">
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={() =>
+                selectedAppointmentId
+                  ? this.updateAppointment()
+                  : this.createAppointment()
+              }
+            >
+              {selectedAppointmentId ? "Update Appointment" : "Book Appointment"}
+            </button>
+          </div>
+        </form>
 
-        <div className="card-container">
+        <h3>Appointment List</h3>
+        <div className="appointment-list">
           {appointments.map((appointment) => (
-            <div className="card" key={appointment.appointmentId}>
-              <div className="card-header">
-                <h3>{appointment.patientName}</h3>
-              </div>
+            <div className="appointment-card" key={appointment.appointmentId}>
               <div className="card-body">
-                <p>Date: {appointment.appointmentDate}</p>
-                <p>Description: {appointment.description}</p>
-                <p>Phone Number: {appointment.patientPhoneNumber}</p>
-                <p>Email: {appointment.patientEmail}</p>
-                <p>Patient ID: {appointment.patientId}</p>
-              </div>
-              <div className="card-footer">
-                <button className="btn btn-primary" onClick={() => this.handleUpdate(appointment.appointmentId)}>
+                <h4 className="card-title">{appointment.patientName}</h4>
+                <p className="card-text">Date: {appointment.appointmentDate}</p>
+                <p className="card-text">Description: {appointment.description}</p>
+                <p className="card-text">Phone Number: {appointment.patientPhoneNumber}</p>
+                <p className="card-text">Email: {appointment.patientEmail}</p>
+                <p className="card-text">Patient ID: {appointment.patientId}</p>
+                <p className="card-text">Doctor ID: {appointment.doctorId}</p>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => this.handleUpdate(appointment.appointmentId)}
+                >
                   Update
                 </button>
-                <button className="btn btn-danger" onClick={() => this.handleDelete(appointment.appointmentId)}>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => this.handleDelete(appointment.appointmentId)}
+                >
                   Delete
                 </button>
               </div>

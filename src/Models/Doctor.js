@@ -20,6 +20,7 @@ export default class Doctor extends Component {
         imageData: null, // Change to null for better handling of file input
       },
       isEditMode: false,
+      showForm: false, // State variable to toggle form display
     };
   }
 
@@ -52,6 +53,7 @@ export default class Doctor extends Component {
             imageData: null, // Change to null for better handling of file input
           },
           isEditMode: true,
+          showForm: true, // Display the form when updating a doctor
         });
       })
       .catch((error) => {
@@ -60,37 +62,38 @@ export default class Doctor extends Component {
   };
 
   updateDoctor = () => {
-  const { selectedDoctorId, newDoctor } = this.state;
+    const { selectedDoctorId, newDoctor } = this.state;
 
-  axios
-    .put(`${variables.API_URL}Doctor/${selectedDoctorId}`, newDoctor, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Set the correct content type
-      },
-    })
-    .then((response) => {
-      const updatedDoctor = response.data;
-      console.log('Doctor updated:', updatedDoctor);
-      this.fetchDoctors();
-      this.setState({
-        selectedDoctorId: null,
-        selectedDoctor: null,
-        newDoctor: {
-          doctor_Name: '',
-          specialization: '',
-          doctor_Email: '',
-          contact_No: '',
-          status: '',
-          password: '',
-          imageData: null, // Change to null for better handling of file input
+    axios
+      .put(`${variables.API_URL}Doctor/${selectedDoctorId}`, newDoctor, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the correct content type
         },
-        isEditMode: false,
+      })
+      .then((response) => {
+        const updatedDoctor = response.data;
+        console.log('Doctor updated:', updatedDoctor);
+        this.fetchDoctors();
+        this.setState({
+          selectedDoctorId: null,
+          selectedDoctor: null,
+          newDoctor: {
+            doctor_Name: '',
+            specialization: '',
+            doctor_Email: '',
+            contact_No: '',
+            status: '',
+            password: '',
+            imageData: null, // Change to null for better handling of file input
+          },
+          isEditMode: false,
+          showForm: false, // Hide the form after updating a doctor
+        });
+      })
+      .catch((error) => {
+        console.error('Error updating the doctor:', error);
       });
-    })
-    .catch((error) => {
-      console.error('Error updating the doctor:', error);
-    });
-};
+  };
 
   handleDelete = (doctorId) => {
     const confirmed = window.confirm('Are you sure you want to delete this doctor?');
@@ -101,6 +104,21 @@ export default class Doctor extends Component {
         .then((response) => {
           console.log('Doctor deleted:', response.data);
           this.fetchDoctors(); // Refresh the list of doctors
+          this.setState({
+            selectedDoctorId: null,
+            selectedDoctor: null,
+            newDoctor: {
+              doctor_Name: '',
+              specialization: '',
+              doctor_Email: '',
+              contact_No: '',
+              status: '',
+              password: '',
+              imageData: null, // Change to null for better handling of file input
+            },
+            isEditMode: false,
+            showForm: false, // Hide the form after deleting a doctor
+          });
         })
         .catch((error) => {
           console.error('Error deleting the doctor:', error);
@@ -172,6 +190,7 @@ export default class Doctor extends Component {
             password: '',
             imageData: null, // Change to null for better handling of file input
           },
+          showForm: false, // Hide the form after adding a doctor
         });
       })
       .catch((error) => {
@@ -179,81 +198,118 @@ export default class Doctor extends Component {
       });
   };
 
+  toggleForm = () => {
+    this.setState((prevState) => ({
+      showForm: !prevState.showForm,
+      selectedDoctorId: null,
+      selectedDoctor: null,
+      newDoctor: {
+        doctor_Name: '',
+        specialization: '',
+        doctor_Email: '',
+        contact_No: '',
+        status: '',
+        password: '',
+        imageData: null, // Change to null for better handling of file input
+      },
+      isEditMode: false,
+    }));
+  };
+
   render() {
-    const { doctors, newDoctor, isEditMode } = this.state;
+    const { doctors, newDoctor, isEditMode, showForm } = this.state;
 
     return (
       <div>
         <h1 className="App">Doctors</h1>
 
-        {/* Add Doctor Form */}
-        <form onSubmit={this.handleAddDoctor}>
-          <h2>{isEditMode ? 'Edit Doctor' : 'Add New Doctor'}</h2>
-          <label>
-            Doctor Name:
-            <input
-              type="text"
-              name="doctor_Name"
-              value={newDoctor.doctor_Name}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <label>
-            Specialization:
-            <input
-              type="text"
-              name="specialization"
-              value={newDoctor.specialization}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <label>
-            Doctor Email:
-            <input
-              type="email"
-              name="doctor_Email"
-              value={newDoctor.doctor_Email}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <label>
-            Contact No:
-            <input
-              type="tel"
-              name="contact_No"
-              value={newDoctor.contact_No}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <label>
-            Status:
-            <input
-              type="text"
-              name="status"
-              value={newDoctor.status}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <label>
-            Password:
-            <input
-              type="password"
-              name="password"
-              value={newDoctor.password}
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <label>
-            Image:
-            <input
-              type="file"
-              name="imageData"
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <button type="submit">{isEditMode ? 'Save' : 'Add Doctor'}</button>
-        </form>
+       {/* Add Doctor Button */}
+{!showForm && (
+  <button className="btn btn-info add-doctor-button" onClick={this.toggleForm}>
+    Add Doctor
+  </button>
+)}
 
+
+        {/* Add/Update Doctor Form */}
+        {showForm && (
+          <form onSubmit={this.handleAddDoctor}>
+            <h2>{isEditMode ? 'Edit Doctor' : 'Add New Doctor'}</h2>
+            <label>
+              Doctor Name:
+              <input
+                type="text"
+                name="doctor_Name"
+                value={newDoctor.doctor_Name}
+                onChange={this.handleInputChange}
+                className="text-input"
+              />
+            </label>
+            <label>
+              Specialization:
+              <input
+                type="text"
+                name="specialization"
+                value={newDoctor.specialization}
+                onChange={this.handleInputChange}
+                className="text-input"
+              />
+            </label>
+            <label>
+              Doctor Email:
+              <input
+                type="email"
+                name="doctor_Email"
+                value={newDoctor.doctor_Email}
+                onChange={this.handleInputChange}
+                className="text-input"
+              />
+            </label>
+            <label>
+              Contact No:
+              <input
+                type="tel"
+                name="contact_No"
+                value={newDoctor.contact_No}
+                onChange={this.handleInputChange}
+                className="text-input"
+              />
+            </label>
+            <label>
+              Status:
+              <input
+                type="text"
+                name="status"
+                value={newDoctor.status}
+                onChange={this.handleInputChange}
+                className="text-input"
+              />
+            </label>
+            <label>
+              Password:
+              <input
+                type="password"
+                name="password"
+                value={newDoctor.password}
+                onChange={this.handleInputChange}
+                className="text-input"
+              />
+            </label>
+            <label>
+              Image:
+              <input type="file" name="imageData" onChange={this.handleInputChange} />
+            </label>
+            <div className="form-buttons">
+              <button type="submit">{isEditMode ? 'Save' : 'Add Doctor'}</button>
+              <button type="button" className="btn btn-danger" onClick={this.toggleForm}>
+  Cancel
+</button>
+
+            </div>
+          </form>
+        )}
+
+        {/* List of Doctors */}
         <div className="card-container">
           {doctors.map((doctor) => (
             <div key={doctor.doctor_Id} className="card">
@@ -267,16 +323,10 @@ export default class Doctor extends Component {
               <p>Email: {doctor.doctor_Email}</p>
               <p>Contact No: {doctor.contact_No}</p>
               <p>Status: {doctor.status}</p>
-              <button
-                className="edit-button"
-                onClick={() => this.handleUpdate(doctor.doctor_Id)}
-              >
+              <button className="edit-button" onClick={() => this.handleUpdate(doctor.doctor_Id)}>
                 Edit
               </button>
-              <button
-                className="delete-button"
-                onClick={() => this.handleDelete(doctor.doctor_Id)}
-              >
+              <button className="delete-button" onClick={() => this.handleDelete(doctor.doctor_Id)}>
                 Delete
               </button>
             </div>
