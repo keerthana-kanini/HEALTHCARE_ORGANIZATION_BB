@@ -121,7 +121,7 @@ export default function PatientRegister() {
   return (
     <div style={containerStyle}>
       <div style={cardStyle}>
-        <h2 style={headingStyle}>User Registration</h2>
+        <h2 style={headingStyle}>Patient Registration</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <input

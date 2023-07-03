@@ -82,7 +82,7 @@ export default function PatientLogin() {
             color: '#4158d0',
           }}
         >
-          User Login
+           Patient Login
         </h2>
         <form onSubmit={proceedLogin}>
           <div style={{ marginBottom: '20px' }}>
