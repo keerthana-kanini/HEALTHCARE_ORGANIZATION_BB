@@ -75,7 +75,7 @@ export default function PatientLogin() {
             color: '#4158d0',
           }}
         >
-          Patient Login
+        Login
         </h2>
         <form onSubmit={proceedLoginUsingAPI}>
           {role === 'patient' && (

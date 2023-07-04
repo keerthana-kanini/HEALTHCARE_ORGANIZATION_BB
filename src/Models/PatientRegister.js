@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 export default function PatientRegister() {
   const [patient_Name, setPatientName] = useState('');
   const [password, setPassword] = useState('');
-  const [disease, setDisease] = useState('');
-  const [disease_Description, setDiseaseDescription] = useState('');
+  // const [disease, setDisease] = useState('');
+  // const [disease_Description, setDiseaseDescription] = useState('');
   const [patient_No, setPatientNo] = useState('');
   const navigate = useNavigate();
 
@@ -22,14 +22,14 @@ export default function PatientRegister() {
       isValid = false;
       errorMessage += ' Password';
     }
-    if (disease === null || disease === '') {
-      isValid = false;
-      errorMessage += ' Disease';
-    }
-    if (disease_Description === null || disease_Description === '') {
-      isValid = false;
-      errorMessage += ' Disease Description';
-    }
+    // if (disease === null || disease === '') {
+    //   isValid = false;
+    //   errorMessage += ' Disease';
+    // }
+    // if (disease_Description === null || disease_Description === '') {
+    //   isValid = false;
+    //   errorMessage += ' Disease Description';
+    // }
     if (patient_No === null || patient_No === '') {
       isValid = false;
       errorMessage += ' Patient Number';
@@ -48,8 +48,8 @@ export default function PatientRegister() {
     if (validateForm()) {
       const registrationData = {
         patient_Name,
-        disease,
-        disease_Description,
+        // disease,
+        // disease_Description,
         patient_No,
         password,
       };
@@ -133,7 +133,7 @@ export default function PatientRegister() {
               placeholder="Patient Name"
             />
           </div>
-          <div>
+          {/* <div>
             <input
               type="text"
               required
@@ -152,7 +152,7 @@ export default function PatientRegister() {
               style={inputStyle}
               placeholder="Disease Description"
             />
-          </div>
+          </div> */}
           <div>
             <input
               type="text"

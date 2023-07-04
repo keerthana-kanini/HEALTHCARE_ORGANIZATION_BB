@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { variables } from './Variable';
 import './Doctor.css';
+import Navdoctor from '../Navbar/Navdoctor';
 
 export default class Doctor extends Component {
   constructor(props) {
@@ -221,8 +222,8 @@ export default class Doctor extends Component {
 
     return (
       <div>
+        <div><Navdoctor/></div>
         <h1 className="App">Doctors</h1>
-
        {/* Add Doctor Button */}
 {!showForm && (
   <button className="btn btn-info add-doctor-button" onClick={this.toggleForm}>

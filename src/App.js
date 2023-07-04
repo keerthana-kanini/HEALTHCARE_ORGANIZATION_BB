@@ -12,6 +12,8 @@ import PatientLogin from './Models/PaientLogin';
 import Appointment from './Models/Appointment';
 import ActiveDoctor from './Models/ActiveDoctor';
 import AdminLogin from './Models/AdminLogin';
+import HomePage from './Models/HomePage';
+import { NavDropdown } from 'react-bootstrap';
 
 function App() {
   return (
@@ -19,7 +21,7 @@ function App() {
       <ToastContainer />
 
       <BrowserRouter>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        {/* <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container">
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
@@ -73,11 +75,19 @@ function App() {
                   AdminLogin
                   </NavLink>
                 </li>
+                <NavDropdown title="Register" id="register-dropdown">
+              <NavDropdown.Item as={NavLink} to="/PatientRegister" activeClassName="active">
+                Register Doctor
+              </NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/Register" activeClassName="active">
+                Register Patient
+              </NavDropdown.Item>
+            </NavDropdown>
                 
                </ul>
             </div>
           </div>
-        </nav>
+        </nav> */}
 
         <Routes>
           
@@ -91,6 +101,7 @@ function App() {
           <Route path="/PatientLogin" element={<PatientLogin/>} />
           <Route path="/ActiveDoctor" element={<ActiveDoctor/>} />
           <Route path="/AdminLogin" element={<AdminLogin/>} />
+          <Route path="/homepage" element={<HomePage/>} />
 
         </Routes>
       </BrowserRouter>
