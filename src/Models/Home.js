@@ -6,8 +6,8 @@ import image1 from "../Images/image1.png";
 import image2 from "../Images/image2.jpg";
 import image3 from "../Images/image3.jpg";
 import apollo from "../Images/APOLLOHOSP.jpg";
-
 import './Home.css';
+import Navhome from "../Navbar/Navhome";
 
 export class Home extends Component {
   render() {
@@ -30,6 +30,7 @@ export class Home extends Component {
     }
 
     return (
+      <div><Navhome/>
       <div style={overflow}>
         <Slider {...settings}>
           <div>
@@ -361,25 +362,25 @@ export class Home extends Component {
                       <div>
                         <h4>STAY IN TOUCH</h4>
                         <div className="footer-social">
-                          <a href="https://www.instagram.com/fortis.healthcare" target="_blank">
+                          <a href="https://www.instagram.com/theapollohospitals/?hl=en" target="_blank">
                             <img
                               src="https://fhlazwebsau01.blob.core.windows.net/drupal-data/2023-03/instagrame.png"
                               alt="instagram"
                             />
                           </a>
-                          <a href="https://www.facebook.com/fortishealth" target="_blank">
+                          <a href="https://www.facebook.com/TheApolloHospitals/" target="_blank">
                             <img
                               src="https://fhlazwebsau01.blob.core.windows.net/drupal-data/2023-03/facebook.png"
                               alt="facebook"
                             />
                           </a>
-                          <a href="https://twitter.com/fortis_hospital" target="_blank">
+                          <a href="https://twitter.com/i/flow/login?redirect_after_login=%2FApollo_Pharmacy" target="_blank">
                             <img
                               src="https://fhlazwebsau01.blob.core.windows.net/drupal-data/2023-03/twitter.png"
                               alt="twitter"
                             />
                           </a>
-                          <a href="https://www.youtube.com/channel/UCn0ShMNqXI3kQP-Eoaf7olg" target="_blank">
+                          <a href="https://www.youtube.com/channel/UC0InVdvqNyNzKBl1-TL348A" target="_blank">
                             <img
                               src="https://fhlazwebsau01.blob.core.windows.net/drupal-data/2023-03/youtube.png"
                               alt="youtube"
@@ -459,7 +460,7 @@ export class Home extends Component {
           </div>
         </div>
       </div>
-      
+      </div>
         </div>
       
     );

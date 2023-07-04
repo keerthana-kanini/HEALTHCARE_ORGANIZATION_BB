@@ -34,7 +34,7 @@ export default function Navdoctor() {
               <NavDropdown.Item as={NavLink} to="/register" activeClassName="active">
                 Register Doctor
               </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/loginpatient" activeClassName="active">
+              <NavDropdown.Item as={NavLink} to="/PatientRegister" activeClassName="active">
                 Register Patient
               </NavDropdown.Item>
             </NavDropdown>

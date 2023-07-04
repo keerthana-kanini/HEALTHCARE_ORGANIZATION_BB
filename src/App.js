@@ -14,6 +14,13 @@ import ActiveDoctor from './Models/ActiveDoctor';
 import AdminLogin from './Models/AdminLogin';
 import HomePage from './Models/HomePage';
 import { NavDropdown } from 'react-bootstrap';
+import Doctorcard from './Models/Doctorcard';
+import DoctorView from './Models/DoctorView';
+import BookApp from './Models/BookApp';
+import AdminPage from './Models/AdminPage';
+import Admincrud from './Models/Admincrud';
+import Patientview from './Models/Patientview';
+
 
 function App() {
   return (
@@ -21,74 +28,6 @@ function App() {
       <ToastContainer />
 
       <BrowserRouter>
-        {/* <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div className="container">
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav">
-              <li className="nav-item">
-                  <NavLink className="nav-link" to="/home" activeClassName="active">
-                    HOME
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/doctor" activeClassName="active">
-                    Doctor
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/patient" activeClassName="active">
-                    Patient
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/Appointment" activeClassName="active">
-                    Appointment
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/register" activeClassName="active">
-                    Register
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/login" activeClassName="active">
-                    Login
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/Patientlogin" activeClassName="active">
-                    PatientLogin
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/PatientRegister" activeClassName="active">
-                  PatientRegister
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/ActiveDoctor" activeClassName="active">
-                 Admin
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/AdminLogin" activeClassName="active">
-                  AdminLogin
-                  </NavLink>
-                </li>
-                <NavDropdown title="Register" id="register-dropdown">
-              <NavDropdown.Item as={NavLink} to="/PatientRegister" activeClassName="active">
-                Register Doctor
-              </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/Register" activeClassName="active">
-                Register Patient
-              </NavDropdown.Item>
-            </NavDropdown>
-                
-               </ul>
-            </div>
-          </div>
-        </nav> */}
-
         <Routes>
           
         <Route path="/home" element={<Home />} />
@@ -102,6 +41,14 @@ function App() {
           <Route path="/ActiveDoctor" element={<ActiveDoctor/>} />
           <Route path="/AdminLogin" element={<AdminLogin/>} />
           <Route path="/homepage" element={<HomePage/>} />
+          <Route path="/doctorcard" element={<Doctorcard/>} />
+          <Route path="/doctorview" element={<DoctorView/>} />
+          <Route path="/bookapp" element={<BookApp/>} />
+          <Route path="/adminpage" element={<AdminPage/>} />
+          <Route path="/admincrud" element={<Admincrud/>} />
+          <Route path="/patientview" element={<Patientview/>} />
+
+
 
         </Routes>
       </BrowserRouter>

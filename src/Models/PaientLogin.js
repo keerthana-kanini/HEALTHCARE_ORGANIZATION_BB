@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Navhome from '../Navbar/Navhome';
 
 export default function PatientLogin() {
   const [patientName, setPatientName] = useState('');
@@ -41,7 +42,7 @@ export default function PatientLogin() {
         console.log(token); // Log the token for debugging
         sessionStorage.setItem('token', token);
         toast.success('Success');
-        navigate('/doctor');
+        navigate('/home');
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -50,6 +51,7 @@ export default function PatientLogin() {
   };
 
   return (
+    <div><Navhome/>
     <div
       style={{
         display: 'flex',
@@ -212,6 +214,7 @@ export default function PatientLogin() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }

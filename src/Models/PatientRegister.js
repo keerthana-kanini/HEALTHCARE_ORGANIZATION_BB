@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Navhome from '../Navbar/Navhome';
 
 export default function PatientRegister() {
   const [patient_Name, setPatientName] = useState('');
@@ -119,6 +120,7 @@ export default function PatientRegister() {
   };
 
   return (
+    <div><Navhome/>
     <div style={containerStyle}>
       <div style={cardStyle}>
         <h2 style={headingStyle}>Patient Registration</h2>
@@ -186,6 +188,7 @@ export default function PatientRegister() {
           </Link>
         </div>
       </div>
+    </div>
     </div>
   );
 }

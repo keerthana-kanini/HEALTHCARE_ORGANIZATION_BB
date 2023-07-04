@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ActiveDoctor.css';
+import Navadmin from '../Navbar/Navadmin';
 // import Navbar from './Navbar';
 
 const ActiveDoctor = () => {
@@ -32,6 +33,7 @@ const ActiveDoctor = () => {
 
   return (
     <div>
+      <div><Navadmin/></div>
       <div className="card active-doctor-card">
         <div className="card-body">
           <h5 className="card-title">Active Doctors</h5>
