@@ -41,7 +41,7 @@ const ActiveDoctor = () => {
                 <h6>{doctor.doctor_Name}</h6>
                 <p>Specialization: {doctor.specialization}</p>
                 <p>Email: {doctor.doctor_Email}</p>
-                <p>Phone: {doctor.doctor_PhNo}</p>
+                <p>Phone: {doctor.contact_No}</p>
                 <p>Status: {doctor.status}</p>
                 <button
                   onClick={() => handleApproveDoctor(doctor.doctor_Id)}
@@ -52,7 +52,7 @@ const ActiveDoctor = () => {
               </div>
             ))}
           </div>
-        </div>+++
+        </div>
       </div>
     </div>
   );

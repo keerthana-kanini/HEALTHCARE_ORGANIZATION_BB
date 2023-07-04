@@ -1,59 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function PatientLogin() {
-  const [patient_Name, setPatientName] = useState('');
+  const [patientName, setPatientName] = useState('');
   const [password, setPassword] = useState('');
+  const [doctorName, setDoctorName] = useState('');
+  const [role, setRole] = useState('patient'); // Default role is "patient"
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    sessionStorage.clear();
-  }, []);
-
-  const proceedLogin = (e) => {
+  const proceedLoginUsingAPI = (e) => {
     e.preventDefault();
-    if (validate()) {
-      const patient = { patient_Name, password };
 
-      fetch('https://localhost:7123/api/Tokens/Patient', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(patient),
+    const apiUrl =
+      role === 'user'
+        ? 'https://localhost:7123/api/Tokens'
+        : 'https://localhost:7123/api/Tokens/Patient';
+
+    const credentials =
+      role === 'user'
+        ? { doctor_Name: doctorName, password: password }
+        : { patient_Name: patientName, password: password };
+
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.text(); // Return the response as text
+        } else {
+          throw new Error('Invalid credentials');
+        }
       })
-        .then((res) => {
-          if (res.ok) {
-            return res.text(); // Return the response as text
-          } else {
-            throw new Error('Invalid credentials');
-          }
-        })
-        .then((token) => {
-          console.log(token); // Log the token for debugging
-          sessionStorage.setItem('token', token);
-          toast.success('Success');
-          navigate('/home');
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          toast.error(error.message);
-        });
-    }
-  };
-
-  const validate = () => {
-    let result = true;
-    if (patient_Name === '' || patient_Name === null) {
-      result = false;
-      toast.warning('Please enter your username');
-    }
-    if (password === '' || password === null) {
-      result = false;
-      toast.warning('Please enter your password');
-    }
-    return result;
+      .then((token) => {
+        console.log(token); // Log the token for debugging
+        sessionStorage.setItem('token', token);
+        toast.success('Success');
+        navigate('/doctor');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        toast.error(error.message);
+      });
   };
 
   return (
@@ -82,27 +75,49 @@ export default function PatientLogin() {
             color: '#4158d0',
           }}
         >
-           Patient Login
+          Patient Login
         </h2>
-        <form onSubmit={proceedLogin}>
-          <div style={{ marginBottom: '20px' }}>
-            <input
-              type="text"
-              required
-              value={patient_Name}
-              onChange={(e) => setPatientName(e.target.value)}
-              style={{
-                height: '40px',
-                width: '100%',
-                outline: 'none',
-                fontSize: '16px',
-                paddingLeft: '10px',
-                border: '1px solid lightgrey',
-                borderRadius: '5px',
-              }}
-              placeholder="Patient Name"
-            />
-          </div>
+        <form onSubmit={proceedLoginUsingAPI}>
+          {role === 'patient' && (
+            <div style={{ marginBottom: '20px' }}>
+              <input
+                type="text"
+                required
+                value={patientName}
+                onChange={(e) => setPatientName(e.target.value)}
+                style={{
+                  height: '40px',
+                  width: '100%',
+                  outline: 'none',
+                  fontSize: '16px',
+                  paddingLeft: '10px',
+                  border: '1px solid lightgrey',
+                  borderRadius: '5px',
+                }}
+                placeholder="Patient Name"
+              />
+            </div>
+          )}
+          {role === 'user' && (
+            <div style={{ marginBottom: '20px' }}>
+              <input
+                type="text"
+                required
+                value={doctorName}
+                onChange={(e) => setDoctorName(e.target.value)}
+                style={{
+                  height: '40px',
+                  width: '100%',
+                  outline: 'none',
+                  fontSize: '16px',
+                  paddingLeft: '10px',
+                  border: '1px solid lightgrey',
+                  borderRadius: '5px',
+                }}
+                placeholder="Doctor Name"
+              />
+            </div>
+          )}
           <div style={{ marginBottom: '20px' }}>
             <input
               type="password"
@@ -132,10 +147,33 @@ export default function PatientLogin() {
             }}
           >
             <div>
-              <input type="checkbox" id="remember-me" style={{ marginRight: '5px' }} />
-              <label htmlFor="remember-me">Remember me</label>
+              <div className="form-check">
+                <input
+                  type="radio"
+                  name="role"
+                  value="user"
+                  checked={role === 'user'}
+                  onChange={() => setRole('user')}
+                  className="form-check-input"
+                />
+                <label className="form-check-label">Doctor</label>
+              </div>
+              <div className="form-check">
+                <input
+                  type="radio"
+                  name="role"
+                  value="patient"
+                  checked={role === 'patient'}
+                  onChange={() => setRole('patient')}
+                  className="form-check-input"
+                />
+                <label className="form-check-label">Patient</label>
+              </div>
             </div>
-            <Link to="/forgot-password" style={{ color: '#4158d0', textDecoration: 'none' }}>
+            <Link
+              to="/forgot-password"
+              style={{ color: '#4158d0', textDecoration: 'none' }}
+            >
               Forgot password?
             </Link>
           </div>
@@ -164,7 +202,13 @@ export default function PatientLogin() {
               fontSize: '14px',
             }}
           >
-            Not a member? <Link to="/PatientRegister" style={{ color: '#4158d0', textDecoration: 'none' }}>Signup now</Link>
+            Not a member?{' '}
+            <Link
+              to="/PatientRegister"
+              style={{ color: '#4158d0', textDecoration: 'none' }}
+            >
+              Signup now
+            </Link>
           </div>
         </form>
       </div>

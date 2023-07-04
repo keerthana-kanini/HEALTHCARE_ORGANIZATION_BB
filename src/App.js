@@ -11,6 +11,7 @@ import PatientRegister from './Models/PatientRegister';
 import PatientLogin from './Models/PaientLogin';
 import Appointment from './Models/Appointment';
 import ActiveDoctor from './Models/ActiveDoctor';
+import AdminLogin from './Models/AdminLogin';
 
 function App() {
   return (
@@ -67,6 +68,11 @@ function App() {
                  Admin
                   </NavLink>
                 </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/AdminLogin" activeClassName="active">
+                  AdminLogin
+                  </NavLink>
+                </li>
                 
                </ul>
             </div>
@@ -84,6 +90,7 @@ function App() {
           <Route path="/PatientRegister" element={<PatientRegister />} />
           <Route path="/PatientLogin" element={<PatientLogin/>} />
           <Route path="/ActiveDoctor" element={<ActiveDoctor/>} />
+          <Route path="/AdminLogin" element={<AdminLogin/>} />
 
         </Routes>
       </BrowserRouter>
