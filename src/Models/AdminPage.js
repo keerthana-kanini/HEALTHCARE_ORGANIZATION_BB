@@ -34,7 +34,7 @@ export default class AdminPage extends Component {
     return (
       <div>
         <div><Navadmin/></div>
-        <h1 className="App">Doctors</h1>
+        <h1 className="App"></h1>
 
         {/* List of Doctors */}
         <div className="card-container">

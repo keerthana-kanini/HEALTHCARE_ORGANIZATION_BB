@@ -10,6 +10,10 @@ export default function Navhome() {
     navigate('/home');
   };
 
+  const handleAdminLogin = () => {
+    navigate('/adminlogin');
+  };
+
   const logoStyle = {
     width: '50px', // Adjust the width as needed
     height: '50px', // Adjust the height as needed
@@ -57,6 +61,11 @@ export default function Navhome() {
                 Register Patient
               </NavDropdown.Item>
             </NavDropdown>
+            <li className="nav-item">
+              <NavLink className="nav-link text-dark" to="/adminlogin" activeClassName="active">
+                Admin Login
+              </NavLink>
+            </li>
           </ul>
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
@@ -64,7 +73,6 @@ export default function Navhome() {
                 Logout
               </button>
             </li>
-            
           </ul>
         </div>
       </div>

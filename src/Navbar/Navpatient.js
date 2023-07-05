@@ -40,13 +40,8 @@ export default function Navpatient() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link text-dark" to="/patientview" activeClassName="active">
-              Patient List
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link text-dark" to="/doctorcard" activeClassName="active">
-                Doctor List
+              <NavLink className="nav-link text-dark" to="/doctorview" activeClassName="active">
+              Doctors
               </NavLink>
             </li>
           </ul>

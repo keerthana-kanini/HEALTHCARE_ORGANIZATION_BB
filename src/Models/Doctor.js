@@ -115,10 +115,10 @@ export default class Doctor extends Component {
               contact_No: '',
               status: '',
               password: '',
-              imageData: null, // Change to null for better handling of file input
+              imageData: null,
             },
             isEditMode: false,
-            showForm: false, // Hide the form after deleting a doctor
+            showForm: false,
           });
         })
         .catch((error) => {
@@ -132,7 +132,7 @@ export default class Doctor extends Component {
     const { name, value, type, files } = event.target;
     let newValue = value;
 
-    // Handle file input change for the image field
+    
     if (type === 'file' && files.length > 0) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -175,7 +175,7 @@ export default class Doctor extends Component {
     axios
       .post(`${variables.API_URL}Doctor`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Change content type for file upload
+          'Content-Type': 'multipart/form-data', 
         },
       })
       .then((response) => {
@@ -189,9 +189,9 @@ export default class Doctor extends Component {
             contact_No: '',
             status: '',
             password: '',
-            imageData: null, // Change to null for better handling of file input
+            imageData: null, 
           },
-          showForm: false, // Hide the form after adding a doctor
+          showForm: false, 
         });
       })
       .catch((error) => {
@@ -211,7 +211,7 @@ export default class Doctor extends Component {
         contact_No: '',
         status: '',
         password: '',
-        imageData: null, // Change to null for better handling of file input
+        imageData: null,
       },
       isEditMode: false,
     }));
@@ -223,16 +223,12 @@ export default class Doctor extends Component {
     return (
       <div>
         <div><Navdoctor/></div>
-        <h1 className="App">Doctors</h1>
-       {/* Add Doctor Button */}
+        <h1 className="App"></h1>
 {!showForm && (
   <button className="btn btn-info add-doctor-button" onClick={this.toggleForm}>
     Add Doctor
   </button>
 )}
-
-
-        {/* Add/Update Doctor Form */}
         {showForm && (
           <form onSubmit={this.handleAddDoctor}>
             <h2>{isEditMode ? 'Edit Doctor' : 'Add New Doctor'}</h2>
@@ -309,8 +305,6 @@ export default class Doctor extends Component {
             </div>
           </form>
         )}
-
-        {/* List of Doctors */}
         <div className="card-container">
           {doctors.map((doctor) => (
             <div key={doctor.doctor_Id} className="card">

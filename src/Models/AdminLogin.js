@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import './AdminLogin.css';
 
 export default function AdminLogin() {
   const [adminName, setAdminName] = useState('');
@@ -57,27 +58,34 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="row">
-      <div className="offset-lg-3 col-lg-6" style={{ marginTop: '100px' }}>
-        <form onSubmit={proceedLogin} className="container">
-          <div className="card">
-            <div className="card-header">
-              <h2>Admin Login</h2>
+    <div className="admin-login-container">
+      <div className="admin-login-card">
+        <form onSubmit={proceedLogin} className="admin-login-form">
+          <div className="admin-login-header">
+            <h2>Admin Login</h2>
+          </div>
+          <div className="admin-login-body">
+            <div className="form-group">
+              <label>Admin Name <span className="errmsg">*</span></label>
+              <input
+                value={adminName}
+                onChange={(e) => setAdminName(e.target.value)}
+                className="form-control"
+              />
             </div>
-            <div className="card-body">
-              <div className="form-group">
-                <label>Admin Name <span className="errmsg">*</span></label>
-                <input value={adminName} onChange={(e) => setAdminName(e.target.value)} className="form-control"></input>
-              </div>
-              <div className="form-group">
-                <label>Password <span className="errmsg">*</span></label>
-                <input type="password" value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} className="form-control"></input>
-              </div>
+            <div className="form-group">
+              <label>Password <span className="errmsg">*</span></label>
+              <input
+                type="password"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+                className="form-control"
+              />
             </div>
-            <div className="card-footer">
-              <button type="submit" className="btn btn-primary">Login</button>
-              <Link className="btn btn-success" to="/register">Register</Link>
-            </div>
+          </div>
+          <div className="admin-login-footer">
+            <button type="submit" className="btn btn-primary">Login</button>
+            <Link className="btn btn-success" to="/register">Register</Link>
           </div>
         </form>
       </div>

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Navhome from '../Navbar/Navhome';
+import Navdoc from '../Navbar/Navdoctor';
 
 export default function PatientLogin() {
   const [patientName, setPatientName] = useState('');
   const [password, setPassword] = useState('');
   const [doctorName, setDoctorName] = useState('');
-  const [role, setRole] = useState('patient'); // Default role is "patient"
+  const [role, setRole] = useState('patient'); 
 
   const navigate = useNavigate();
 
@@ -42,7 +43,11 @@ export default function PatientLogin() {
         console.log(token); // Log the token for debugging
         sessionStorage.setItem('token', token);
         toast.success('Success');
-        navigate('/home');
+        if (role === 'user') {
+          navigate('/doctor'); // Navigate to Navdoc page for doctors
+        } else {
+          navigate('/doctorview'); // Navigate to doctorview page for patients
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -51,170 +56,171 @@ export default function PatientLogin() {
   };
 
   return (
-    <div><Navhome/>
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        background: 'linear-gradient(-135deg, #c850c0, #4158d0)',
-      }}
-    >
+    <div>
+      {role === 'user' ? <Navhome /> : <Navhome />}
       <div
         style={{
-          width: '380px',
-          background: '#fff',
-          borderRadius: '15px',
-          boxShadow: '0px 15px 20px rgba(0,0,0,0.1)',
-          padding: '30px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          background: 'linear-gradient(-135deg, #c850c0, #4158d0)',
         }}
       >
-        <h2
+        <div
           style={{
-            textAlign: 'center',
-            marginBottom: '30px',
-            color: '#4158d0',
+            width: '380px',
+            background: '#fff',
+            borderRadius: '15px',
+            boxShadow: '0px 15px 20px rgba(0,0,0,0.1)',
+            padding: '30px',
           }}
         >
-        Login
-        </h2>
-        <form onSubmit={proceedLoginUsingAPI}>
-          {role === 'patient' && (
-            <div style={{ marginBottom: '20px' }}>
-              <input
-                type="text"
-                required
-                value={patientName}
-                onChange={(e) => setPatientName(e.target.value)}
-                style={{
-                  height: '40px',
-                  width: '100%',
-                  outline: 'none',
-                  fontSize: '16px',
-                  paddingLeft: '10px',
-                  border: '1px solid lightgrey',
-                  borderRadius: '5px',
-                }}
-                placeholder="Patient Name"
-              />
-            </div>
-          )}
-          {role === 'user' && (
-            <div style={{ marginBottom: '20px' }}>
-              <input
-                type="text"
-                required
-                value={doctorName}
-                onChange={(e) => setDoctorName(e.target.value)}
-                style={{
-                  height: '40px',
-                  width: '100%',
-                  outline: 'none',
-                  fontSize: '16px',
-                  paddingLeft: '10px',
-                  border: '1px solid lightgrey',
-                  borderRadius: '5px',
-                }}
-                placeholder="Doctor Name"
-              />
-            </div>
-          )}
-          <div style={{ marginBottom: '20px' }}>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                height: '40px',
-                width: '100%',
-                outline: 'none',
-                fontSize: '16px',
-                paddingLeft: '10px',
-                border: '1px solid lightgrey',
-                borderRadius: '5px',
-              }}
-              placeholder="Password"
-            />
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '20px',
-              color: '#262626',
-              fontSize: '14px',
-            }}
-          >
-            <div>
-              <div className="form-check">
-                <input
-                  type="radio"
-                  name="role"
-                  value="user"
-                  checked={role === 'user'}
-                  onChange={() => setRole('user')}
-                  className="form-check-input"
-                />
-                <label className="form-check-label">Doctor</label>
-              </div>
-              <div className="form-check">
-                <input
-                  type="radio"
-                  name="role"
-                  value="patient"
-                  checked={role === 'patient'}
-                  onChange={() => setRole('patient')}
-                  className="form-check-input"
-                />
-                <label className="form-check-label">Patient</label>
-              </div>
-            </div>
-            <Link
-              to="/forgot-password"
-              style={{ color: '#4158d0', textDecoration: 'none' }}
-            >
-              Forgot password?
-            </Link>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <button
-              type="submit"
-              style={{
-                height: '40px',
-                width: '100%',
-                border: 'none',
-                borderRadius: '5px',
-                fontSize: '16px',
-                color: '#fff',
-                background: 'linear-gradient(-135deg, #c850c0, #4158d0)',
-                cursor: 'pointer',
-              }}
-            >
-              Login
-            </button>
-          </div>
-          <div
+          <h2
             style={{
               textAlign: 'center',
-              marginTop: '20px',
-              color: '#262626',
-              fontSize: '14px',
+              marginBottom: '30px',
+              color: '#4158d0',
             }}
           >
-            Not a member?{' '}
-            <Link
-              to="/PatientRegister"
-              style={{ color: '#4158d0', textDecoration: 'none' }}
+            Login
+          </h2>
+          <form onSubmit={proceedLoginUsingAPI}>
+            {role === 'patient' && (
+              <div style={{ marginBottom: '20px' }}>
+                <input
+                  type="text"
+                  required
+                  value={patientName}
+                  onChange={(e) => setPatientName(e.target.value)}
+                  style={{
+                    height: '40px',
+                    width: '100%',
+                    outline: 'none',
+                    fontSize: '16px',
+                    paddingLeft: '10px',
+                    border: '1px solid lightgrey',
+                    borderRadius: '5px',
+                  }}
+                  placeholder="Name"
+                />
+              </div>
+            )}
+            {role === 'user' && (
+              <div style={{ marginBottom: '20px' }}>
+                <input
+                  type="text"
+                  required
+                  value={doctorName}
+                  onChange={(e) => setDoctorName(e.target.value)}
+                  style={{
+                    height: '40px',
+                    width: '100%',
+                    outline: 'none',
+                    fontSize: '16px',
+                    paddingLeft: '10px',
+                    border: '1px solid lightgrey',
+                    borderRadius: '5px',
+                  }}
+                  placeholder="Doctor Name"
+                />
+              </div>
+            )}
+            <div style={{ marginBottom: '20px' }}>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{
+                  height: '40px',
+                  width: '100%',
+                  outline: 'none',
+                  fontSize: '16px',
+                  paddingLeft: '10px',
+                  border: '1px solid lightgrey',
+                  borderRadius: '5px',
+                }}
+                placeholder="Password"
+              />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px',
+                color: '#262626',
+                fontSize: '14px',
+              }}
             >
-              Signup now
-            </Link>
-          </div>
-        </form>
+              <div>
+                <div className="form-check">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="user"
+                    checked={role === 'user'}
+                    onChange={() => setRole('user')}
+                    className="form-check-input"
+                  />
+                  <label className="form-check-label">Doctor</label>
+                </div>
+                <div className="form-check">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="patient"
+                    checked={role === 'patient'}
+                    onChange={() => setRole('patient')}
+                    className="form-check-input"
+                  />
+                  <label className="form-check-label">Patient</label>
+                </div>
+              </div>
+              <Link
+                to="/forgot-password"
+                style={{ color: '#4158d0', textDecoration: 'none' }}
+              >
+                Forgot password?
+              </Link>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <button
+                type="submit"
+                style={{
+                  height: '40px',
+                  width: '100%',
+                  border: 'none',
+                  borderRadius: '5px',
+                  fontSize: '16px',
+                  color: '#fff',
+                  background: 'linear-gradient(-135deg, #c850c0, #4158d0)',
+                  cursor: 'pointer',
+                }}
+              >
+                Login
+              </button>
+            </div>
+            <div
+              style={{
+                textAlign: 'center',
+                marginTop: '20px',
+                color: '#262626',
+                fontSize: '14px',
+              }}
+            >
+              Not a member?{' '}
+              <Link
+                to="/PatientRegister"
+                style={{ color: '#4158d0', textDecoration: 'none' }}
+              >
+                Signup now
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
     </div>
   );
 }

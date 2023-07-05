@@ -1,52 +1,64 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { NavDropdown } from 'react-bootstrap';
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import logo from '../Images/APOLLOHOSP.jpg';
 
 export default function Navdoctor() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate('/home');
+  };
+
+  const logoStyle = {
+    width: '50px', 
+    height: '50px',
+  };
+
   return (
-    <div>
-        <div> <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-info bg-info">
       <div className="container">
+        <NavLink className="navbar-brand" to="/home">
+          <img src={logo} alt="Logo" style={logoStyle} />
+        </NavLink>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
-            
             <li className="nav-item">
-              <NavLink className="nav-link" to="/home" activeClassName="active">
+              <NavLink className="nav-link text-dark" to="/home" activeClassName="active">
                 Home
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/admin" activeClassName="active">
-                Requests
+              <NavLink className="nav-link text-dark" to="/doctorview" activeClassName="active">
+             Doctor Details
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/doctor" activeClassName="active">
-                Doctor
+              <NavLink className="nav-link text-dark" to="/patientview" activeClassName="active">
+              Patient details
               </NavLink>
             </li>
+          </ul>
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/patient" activeClassName="active">
-                Patient
-              </NavLink>
+              <button className="nav-link btn btn-link text-dark" onClick={handleLogout} style={{ marginLeft: '10px' }}>
+                Logout
+              </button>
             </li>
-            <NavDropdown title="Register" id="register-dropdown">
-              <NavDropdown.Item as={NavLink} to="/register" activeClassName="active">
-                Register Doctor
-              </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/PatientRegister" activeClassName="active">
-                Register Patient
-              </NavDropdown.Item>
-            </NavDropdown>
-            {/* <li className="nav-item">
-              <NavLink className="nav-link" to="/login" activeClassName="active">
-                Login
-              </NavLink>
-            </li> */}
+            
           </ul>
         </div>
       </div>
-    </nav></div>
-    </div>
-  )
+    </nav>
+  );
 }

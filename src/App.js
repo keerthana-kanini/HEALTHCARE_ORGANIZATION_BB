@@ -29,7 +29,7 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-          
+        <Route path="/" element={<AdminLogin/>} />
         <Route path="/home" element={<Home />} />
           <Route path="/doctor" element={<Doctor />} />
           <Route path="/patient" element={<Patient/>} />
