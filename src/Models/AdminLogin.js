@@ -85,7 +85,6 @@ export default function AdminLogin() {
           </div>
           <div className="admin-login-footer">
             <button type="submit" className="btn btn-primary">Login</button>
-            <Link className="btn btn-success" to="/register">Register</Link>
           </div>
         </form>
       </div>

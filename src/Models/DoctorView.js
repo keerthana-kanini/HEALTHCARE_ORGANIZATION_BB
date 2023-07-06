@@ -46,7 +46,7 @@ export default function DoctorView() {
       formData.append('password', doctor.updatedPassword || doctor.password);
       formData.append('status', doctor.updatedStatus || doctor.status);
 
-      // Append the image file if it exists and has been updated
+     
       if (doctor.updatedImageFile) {
         formData.append('imageFile', doctor.updatedImageFile);
       }
@@ -58,7 +58,7 @@ export default function DoctorView() {
       });
 
       fetchDoctors();
-      setEditMode(null); // Exit edit mode after successful update
+      setEditMode(null); 
     } catch (error) {
       console.error('Error updating doctor:', error);
     }

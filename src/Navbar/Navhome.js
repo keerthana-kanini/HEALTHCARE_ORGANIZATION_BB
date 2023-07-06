@@ -15,8 +15,8 @@ export default function Navhome() {
   };
 
   const logoStyle = {
-    width: '50px', // Adjust the width as needed
-    height: '50px', // Adjust the height as needed
+    width: '50px',
+    height: '50px', 
   };
 
   return (
